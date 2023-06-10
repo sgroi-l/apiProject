@@ -1,0 +1,71 @@
+
+:root {
+    font-size: 10px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 400;
+    --primary-color: #FFFBF3;
+    --secondary-color: #00ff00;
+    --accent-color: #0000ff;
+  }
+
+body {
+    min-height: 70vh;
+    margin-top: 10rem;
+    background-color: var(--primary-color);
+  }
+  
+  
+  #logo {
+    display: block;
+    margin: 0 auto;
+    width: 85vw;
+    max-width: 50rem;
+  }
+  
+  nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  
+  form {
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    width: 17.5rem;
+    height: 3rem;
+    border-radius:3rem;
+    border:1px solid #dcdcdc;
+    justify-content: space-around;
+    margin: auto;
+  }
+
+  .bar:hover{
+    box-shadow: 1px 1px 8px 1px #dcdcdc;
+  }
+
+  .bar:focus-within{
+    box-shadow: 1px 1px 8px 1px #dcdcdc;
+    outline:none;
+  }
+
+  #search{
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 500;
+    font-style: italic;
+    height:2rem;
+    border:none;
+    width:12rem;
+    outline: none;
+  }
+
+  #searchIcon {
+    width: 2rem;
+  }
+
+
+ 
