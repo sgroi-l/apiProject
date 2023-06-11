@@ -1,0 +1,32 @@
+#data-render {
+    text-align: center;
+    width: 70%;
+    margin: auto;
+  }
+  
+  #temperature {
+    display: block;
+    margin: 2.5rem auto 0 auto;
+    text-align: center;
+    font-size: var(--large-font);
+  }
+  
+  #location {
+    display: block;
+    margin: 0 auto 2.5rem auto;
+    text-align: center;
+    font-size: var(--small-font);
+  }
+  
+  #activity {
+    display: block;
+    text-align: center;
+    font-size: var(--medium-font);
+  }
+
+  @media only screen and (max-width: 1200px) {
+    #activity {
+        text-align: justify;
+        text-justify: inter-word;
+    }
+  }

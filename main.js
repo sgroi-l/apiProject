@@ -38,12 +38,17 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input}&appid=62f3a1ae
     // Clear weather data
     let weatherElement = "";
     // Create element
-    weatherElement = document.createElement("h1");
-    weatherElement.setAttribute("id", "weather");
-    weatherText = document.createTextNode(`${data.name}, ${data.sys.country}: ${temperature}\u00B0C`)
+    temperatureElement = document.createElement("h1");
+    locationElement = document.createElement("p");
+    temperatureElement.setAttribute("id", "temperature");
+    locationElement.setAttribute("id", "location");
+    temperatureText = document.createTextNode(`${temperature}\u00B0C`)
+    locationText = document.createTextNode(`${data.name}, ${data.sys.country}`)
     // append elements 
-    renderElement.append(weatherElement);
-    weatherElement.append(weatherText);
+    renderElement.append(temperatureElement);
+    renderElement.append(locationElement);
+    temperatureElement.append(temperatureText);
+    locationElement.append(locationText);
     console.log(renderElement);
     // Second promise
     let typeArray;
