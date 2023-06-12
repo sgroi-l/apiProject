@@ -149,7 +149,8 @@ body {
     border:none;
     width:12rem;
     outline: none;
-  }
+    background-color: var(--primary-color);
+  } 
 
   #searchIcon {
     width: 2rem;
