@@ -84,7 +84,7 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input}&appid=62f3a1ae
         // Set ID attribute to activity
         activityElement.setAttribute('id', "activity")
         // Create text for activity element
-        let activityText = document.createTextNode(`Try a ${jsonData.type} activity today. ${jsonData.activity}.`);
+        let activityText = document.createTextNode(`Try a ${jsonData.type} activity today. ${jsonData.activity}. You will need ${jsonData.participants} participant(s) and £${jsonData.price}.`);
         // append elements
         activityElement.append(activityText);
         renderElement.append(activityElement);
