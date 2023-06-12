@@ -4,8 +4,6 @@
     font-family: 'Source Sans 3', sans-serif;
     font-weight: 400;
     --primary-color: #FFFBF3;
-    --secondary-color: #00ff00;
-    --accent-color: #0000ff;
     --small-font: 1.25rem;
     --medium-font: 1.75rem;
     --large-font: 3rem;
@@ -17,7 +15,6 @@ body {
     background-color: var(--primary-color);
   }
   
-  
   #logo {
     display: block;
     margin: 0 auto;
@@ -25,10 +22,98 @@ body {
     max-width: 50rem;
   }
   
-  nav {
+  .container {
+    position: relative;
+  }
+  
+  input[type="checkbox"] {
+    display: none;
+  }
+  
+  .menu-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    cursor: pointer;
+  }
+  
+  .menu-btn__burger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    transition: transform 0.3s ease;
+    position: relative;
+    top: -1rem;
+    left: -1rem;
+  }
+  
+  .menu-btn__burger::before,
+  .menu-btn__burger::after {
+    content: "";
     position: absolute;
-    top: 0;
+    width: 2.5rem;
+    height: .3rem;
+    background-color: #3c3c3c;
+    transition: transform 0.3s ease;
     left: 0;
+  }
+  
+  .menu-btn__burger::before {
+    top: 0.5rem;
+  }
+  
+  
+  nav {
+    position: fixed;
+    top: 0;
+    left: -16rem;
+    width: 16rem;
+    height: 100%;
+    background-color: #deb65ed4;
+    transition: left 0.3s ease;
+  }
+  
+  nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: start;
+    padding-top: 6rem;
+    margin-left: 1.5rem;
+  }
+  
+  nav ul li {
+    margin-bottom: 2rem;
+  }
+  
+  nav ul li a {
+    color: #3c3c3c;
+    text-decoration: none;
+    font-size: var(--medium-font);
+  }
+  
+  input[type="checkbox"]:checked + .menu-btn .menu-btn__burger {
+    transform: rotate(45deg);
+    background-color: transparent;
+  }
+  
+  input[type="checkbox"]:checked + .menu-btn .menu-btn__burger::before {
+    transform: translateY(5.5px) rotate(-360deg);
+  }
+  
+  input[type="checkbox"]:checked + .menu-btn .menu-btn__burger::after {
+    transform: translateY(-3px) rotate(450deg);
+  }
+  
+  input[type="checkbox"]:checked ~ nav {
+    left: 0;
+  }
+  
+  i {
+    margin-right: 1rem;
   }
   
   form {
