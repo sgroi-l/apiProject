@@ -6,11 +6,13 @@ function getRandomItem(array) {
 
 const form = document.querySelector("#searchForm");
 const searchLink = document.querySelector('#searchLink'); // I replaced the submit button on the form with an icon. 
-const renderElement = document.querySelector('#data-render')
+let renderElement = document.querySelector('#data-render')
 
 
 searchLink.addEventListener("click", function(event) {
   event.preventDefault()
+  // refresh content
+  renderElement.textContent = "";
   handleFormSubmit(event);
 });
 
@@ -35,15 +37,13 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input}&appid=62f3a1ae
 
     // Use the temperature value as needed
     console.log(`Temperature in ${data.name}, ${data.sys.country}: ${temperature}\u00B0`);
-    // Clear weather data
-    let weatherElement = "";
     // Create element
-    temperatureElement = document.createElement("h1");
-    locationElement = document.createElement("p");
+    const temperatureElement = document.createElement("h1");
+    const locationElement = document.createElement("p");
     temperatureElement.setAttribute("id", "temperature");
     locationElement.setAttribute("id", "location");
-    temperatureText = document.createTextNode(`${temperature}\u00B0C`)
-    locationText = document.createTextNode(`${data.name}, ${data.sys.country}`)
+    let temperatureText = document.createTextNode(`${temperature}\u00B0C`)
+    let locationText = document.createTextNode(`${data.name}, ${data.sys.country}`)
     // append elements 
     renderElement.append(temperatureElement);
     renderElement.append(locationElement);
@@ -60,6 +60,15 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input}&appid=62f3a1ae
 
     const randomType = getRandomItem(typeArray);
 
+    // Storing data in local storage
+    const weatherDetails = {
+      temperature: temperature,
+      locationName: data.name,
+      locationCountry: data.sys.country
+    }
+
+    localStorage.setItem("weatherDetails", JSON.stringify(weatherDetails))
+
     fetch(`https://www.boredapi.com/api/activity?type=${randomType}`)
       .then((response) => {
         if (!response.ok) {
@@ -71,15 +80,24 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input}&appid=62f3a1ae
         console.log(jsonData);
         console.log(jsonData.type);
         // Create element
-        activityElement = document.createElement('h2');
+        const activityElement = document.createElement('h2');
         // Set ID attribute to activity
         activityElement.setAttribute('id', "activity")
         // Create text for activity element
-        activityText = document.createTextNode(`Try a ${jsonData.type} activity today. ${jsonData.activity}. You will need ${jsonData.participants} participant(s) and £${jsonData.price}.`);
+        let activityText = document.createTextNode(`Try a ${jsonData.type} activity today. ${jsonData.activity}.`);
         // append elements
         activityElement.append(activityText);
         renderElement.append(activityElement);
         console.log(renderElement);
+
+        // Storing data in local storage
+        const activityDetails = {
+          activityType: jsonData.type,
+          activity: jsonData.activity
+        }
+
+        window.localStorage.setItem("activityDetails", JSON.stringify(activityDetails));
+
       })
       .catch((error) => console.error(error));
   })
