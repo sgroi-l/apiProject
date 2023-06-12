@@ -14,6 +14,11 @@ searchLink.addEventListener("click", function(event) {
   handleFormSubmit(event);
 });
 
+form.addEventListener("submit", function (event) {
+  event.preventDefault();
+  handleFormSubmit(event);
+});
+
 function handleFormSubmit(event) {
   event.preventDefault();
 
