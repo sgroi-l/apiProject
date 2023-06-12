@@ -4,6 +4,20 @@ function getRandomItem(array) {
   return array[randomIndex];
 }
 
+const menuToggle = document.querySelector('#menu-toggle');
+const nav = document.querySelector('nav');
+
+// Add event listener to the document
+document.addEventListener('click', function(event) {
+  const target = event.target;
+
+  // Check if the click event occurred outside the side menu
+  if (target !== menuToggle && target !== nav && !nav.contains(target)) {
+    // Close the side menu by unchecking the checkbox
+    menuToggle.checked = false;
+  }
+});
+
 const form = document.querySelector("#searchForm");
 const searchLink = document.querySelector('#searchLink'); // I replaced the submit button on the form with an icon. 
 const renderElement = document.querySelector('#data-render')
