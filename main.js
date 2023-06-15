@@ -24,7 +24,12 @@ function handleFormSubmit(event) {
 
 
 // First promise
-fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input}&appid=62f3a1ae06706d5807a4f7d172197411`)
+fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input}&appid=62f3a1ae06706d5807a4f7d172197411`,{
+  method: 'GET',
+  headers: {
+    'Accept': 'application/json'
+  }
+})
   .then((response) => {
     if (!response.ok) {
       throw new Error(response.status);
