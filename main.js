@@ -96,13 +96,21 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input}&appid=62f3a1ae
     }
 
     // Storing data in local storage
+
+
     const weatherDetails = {
       temperature: temperature,
       locationName: data.name,
       locationCountry: data.sys.country
     }
 
-    localStorage.setItem("weatherDetails", JSON.stringify(weatherDetails))
+    if(localStorage.getItem("weatherDetails") === null) {
+     let arr = [];
+    } else {
+      arr = JSON.parse(localStorage.getItem("weatherDetails"));
+    }
+    arr.push(weatherDetails);
+    localStorage.setItem("weatherDetails", JSON.stringify(arr))
 
     // Storing the updated typeArray in local storage
     if (temperature >= 20) {
