@@ -32,6 +32,7 @@ searchLink.addEventListener("click", function(event) {
 
 form.addEventListener("submit", function (event) {
   event.preventDefault();
+  renderElement.textContent = "";
   handleFormSubmit(event);
 });
 
@@ -39,7 +40,7 @@ function handleFormSubmit(event) {
   event.preventDefault();
 
   const input = document.querySelector("#search").value;
-  console.log("Input value:", input);
+  // console.log("Input value:", input);
 
 
 // First promise
@@ -60,7 +61,7 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input}&appid=62f3a1ae
     const temperature = Math.round(data.main.temp - 273.15);
 
     // Use the temperature value as needed
-    console.log(`Temperature in ${data.name}, ${data.sys.country}: ${temperature}\u00B0`);
+    // console.log(`Temperature in ${data.name}, ${data.sys.country}: ${temperature}\u00B0`);
     // Create element
     const temperatureElement = document.createElement("h1");
     const locationElement = document.createElement("p");
@@ -73,16 +74,26 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input}&appid=62f3a1ae
     renderElement.append(locationElement);
     temperatureElement.append(temperatureText);
     locationElement.append(locationText);
-    console.log(renderElement);
+    // console.log(renderElement);
     // Second promise
     let typeArray;
     if (temperature >= 20) {
-      typeArray = ["social", "recreational", "charity"];
+      typeArray = JSON.parse(localStorage.getItem("hotTypeArray")) || ["social", "recreational", "charity"]; // Hot temperature activities
     } else {
-      typeArray = ["education", "cooking", "relaxation"];
+      typeArray = JSON.parse(localStorage.getItem("coldTypeArray")) || ["education", "cooking", "relaxation"]; // Cold temperature activities
     }
-
-    const randomType = getRandomItem(typeArray);
+    
+    let randomType;
+    if (typeArray.length > 0) {
+      randomType = getRandomItem(typeArray);
+    
+      // Remove the selected type from the typeArray
+      typeArray = typeArray.filter(type => type !== randomType);
+    } else {
+      // If the typeArray is empty, reset it to default based on the temperature condition
+      typeArray = temperature >= 20 ? ["social", "recreational", "charity"] : ["education", "cooking", "relaxation"];
+      randomType = getRandomItem(typeArray);
+    }
 
     // Storing data in local storage
     const weatherDetails = {
@@ -93,6 +104,13 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input}&appid=62f3a1ae
 
     localStorage.setItem("weatherDetails", JSON.stringify(weatherDetails))
 
+    // Storing the updated typeArray in local storage
+    if (temperature >= 20) {
+      localStorage.setItem("hotTypeArray", JSON.stringify(typeArray));
+    } else {
+      localStorage.setItem("coldTypeArray", JSON.stringify(typeArray));
+    }
+
     fetch(`https://www.boredapi.com/api/activity?type=${randomType}`)
       .then((response) => {
         if (!response.ok) {
@@ -101,7 +119,7 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input}&appid=62f3a1ae
         return response.json();
       })
       .then((jsonData) => {
-        console.log(jsonData);
+        // console.log(jsonData);
         console.log(jsonData.type);
         // Create element
         const activityElement = document.createElement('h2');
@@ -112,7 +130,7 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input}&appid=62f3a1ae
         // append elements
         activityElement.append(activityText);
         renderElement.append(activityElement);
-        console.log(renderElement);
+        // console.log(renderElement);
 
         // Storing data in local storage
         const activityDetails = {
@@ -121,7 +139,25 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input}&appid=62f3a1ae
         }
 
         window.localStorage.setItem("activityDetails", JSON.stringify(activityDetails));
+        
+        // Remove the selected type from the typeArray
+        const filteredArray = typeArray.filter(type => type !== randomType);
+        typeArray = filteredArray.length > 0 ? filteredArray : (temperature >= 20 ? ["social", "recreational", "charity"] : ["education", "cooking", "relaxation"]);
 
+        console.log(filteredArray)
+        console.log(typeArray);
+
+        // Reset typeArray to default values if empty
+        if (typeArray.length === 0) { 
+          if (temperature < 20) {
+            typeArray = ["education", "relaxation", "cooking"];
+          } else {
+            typeArray = ["social", "recreational", "charity"];
+          }
+        }
+
+        // Store the updated typeArray in local storage
+        localStorage.setItem("typeArray", JSON.stringify(typeArray));
       })
       .catch((error) => console.error(error));
   })
