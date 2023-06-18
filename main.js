@@ -95,31 +95,31 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input}&appid=62f3a1ae
       randomType = getRandomItem(typeArray);
     }
 
-    // Storing data in local storage
-
-
-    const weatherDetails = {
-      temperature: temperature,
-      locationName: data.name,
-      locationCountry: data.sys.country
-    }
-    let arr;
-    if(localStorage.getItem("weatherDetails") === null) {
-     arr = [];
-     arr.unshift(weatherDetails);
-     console.log("This worked");
-    } else {
-      arr = JSON.parse(localStorage.getItem("weatherDetails"));
-      arr.unshift(weatherDetails);
-    }
-    localStorage.setItem("weatherDetails", JSON.stringify(arr))
-
     // Storing the updated typeArray in local storage
     if (temperature >= 20) {
       localStorage.setItem("hotTypeArray", JSON.stringify(typeArray));
     } else {
       localStorage.setItem("coldTypeArray", JSON.stringify(typeArray));
     }
+
+    // Storing data in local storage as objects in an array
+
+    const weatherDetails = {
+      temperature: temperatureElement,
+      location: locationElement
+    }
+    console.log(weatherDetails.temperature)
+    let arr;
+    if(localStorage.getItem("weatherDetails") === null) {
+     arr = [];
+     console.log("This worked");
+    } else {
+      arr = JSON.parse(localStorage.getItem("weatherDetails"));
+    }
+    arr.unshift(weatherDetails);
+    localStorage.setItem("weatherDetails", JSON.stringify(arr))
+
+
 
     fetch(`https://www.boredapi.com/api/activity?type=${randomType}`)
       .then((response) => {
@@ -144,11 +144,19 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input}&appid=62f3a1ae
 
         // Storing data in local storage
         const activityDetails = {
-          activityType: jsonData.type,
-          activity: jsonData.activity
+          activity: activityElement
         }
 
-        window.localStorage.setItem("activityDetails", JSON.stringify(activityDetails));
+        let arr;
+        if(localStorage.getItem("activityDetails") === null) {
+         arr = [];
+         console.log("This worked");
+        } else {
+          arr = JSON.parse(localStorage.getItem("activityDetails"));
+        }
+        arr.unshift(activityDetails);
+        localStorage.setItem("activityDetails", JSON.stringify(arr))
+        
         
         // Remove the selected type from the typeArray
         const filteredArray = typeArray.filter(type => type !== randomType);
