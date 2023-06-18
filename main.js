@@ -103,13 +103,15 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input}&appid=62f3a1ae
       locationName: data.name,
       locationCountry: data.sys.country
     }
-
+    let arr;
     if(localStorage.getItem("weatherDetails") === null) {
-     let arr = [];
+     arr = [];
+     arr.unshift(weatherDetails);
+     console.log("This worked");
     } else {
       arr = JSON.parse(localStorage.getItem("weatherDetails"));
+      arr.unshift(weatherDetails);
     }
-    arr.push(weatherDetails);
     localStorage.setItem("weatherDetails", JSON.stringify(arr))
 
     // Storing the updated typeArray in local storage
