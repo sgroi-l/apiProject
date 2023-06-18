@@ -22,19 +22,24 @@ const form = document.querySelector("#searchForm");
 const searchLink = document.querySelector('#searchLink'); // I replaced the submit button on the form with an icon. 
 let renderElement = document.querySelector('#data-render')
 
+console.log(searchLink)
+if (searchLink) {
+  searchLink.addEventListener("click", function(event) {
+    event.preventDefault()
+    // refresh content
+    renderElement.textContent = "";
+    handleFormSubmit(event);
+  });
+}
 
-searchLink.addEventListener("click", function(event) {
-  event.preventDefault()
-  // refresh content
-  renderElement.textContent = "";
-  handleFormSubmit(event);
-});
+if (form) {
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    renderElement.textContent = "";
+    handleFormSubmit(event);
+  });
+}
 
-form.addEventListener("submit", function (event) {
-  event.preventDefault();
-  renderElement.textContent = "";
-  handleFormSubmit(event);
-});
 
 function handleFormSubmit(event) {
   event.preventDefault();
