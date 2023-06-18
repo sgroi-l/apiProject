@@ -1,3 +1,9 @@
+import { getHistory } from "./history.js";
+let dataHistoryElement = document.querySelector("#data-history");
+if (dataHistoryElement) {
+  getHistory(dataHistoryElement);
+}
+
 // Function to generate a random item from an array
 function getRandomItem(array) {
   const randomIndex = Math.floor(Math.random() * array.length);
@@ -22,7 +28,6 @@ const form = document.querySelector("#searchForm");
 const searchLink = document.querySelector('#searchLink'); // I replaced the submit button on the form with an icon. 
 let renderElement = document.querySelector('#data-render')
 
-console.log(searchLink)
 if (searchLink) {
   searchLink.addEventListener("click", function(event) {
     event.preventDefault()
@@ -39,6 +44,7 @@ if (form) {
     handleFormSubmit(event);
   });
 }
+
 
 
 function handleFormSubmit(event) {
@@ -110,8 +116,10 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input}&appid=62f3a1ae
     // Storing data in local storage as objects in an array
 
     const weatherDetails = {
-      temperature: temperatureElement,
-      location: locationElement
+      temperature: temperature,
+      locationName: data.name,
+      locationCountry: data.sys.country,
+      date: new Date()
     }
     console.log(weatherDetails.temperature)
     let arr;
@@ -149,7 +157,8 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input}&appid=62f3a1ae
 
         // Storing data in local storage
         const activityDetails = {
-          activity: activityElement
+          activityType: jsonData.type,
+          activity: jsonData.activity
         }
 
         let arr;

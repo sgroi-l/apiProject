@@ -34,6 +34,10 @@
   font-size: var(--medium-font);
 }
 
+#date {
+  border-bottom: 1px solid #deb65ed4;
+}
+
 @media only screen and (max-width: 600px) {
   #activity {
       text-align: justify;
