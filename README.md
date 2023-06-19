@@ -41,6 +41,7 @@ As a user, I want to:
 * Navigate the website with a screen reader
 * Visit the website at a publicly accessible domain name
 * As a confused user, I want to be told when something goes wrong
+* As an impatient user, I want to see some indication that data is loading
 
 ## Usage
 
