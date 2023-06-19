@@ -40,11 +40,7 @@ As a user, I want to:
 * Navigate to different pages of the website with only my keyboard
 * Navigate the website with a screen reader
 * Visit the website at a publicly accessible domain name
-
-## Acceptance Criteria
-* Navigation menu
-* User can submit form with location
-* 
+* As a confused user, I want to be told when something goes wrong
 
 ## Usage
 
