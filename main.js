@@ -23,15 +23,18 @@ document.addEventListener('click', function(event) {
     menuToggle.checked = false;
   }
 });
-
+ 
 const form = document.querySelector("#searchForm");
 const searchLink = document.querySelector('#searchLink'); // I replaced the submit button on the form with an icon. 
 let renderElement = document.querySelector('#data-render')
+let errorMessage = document.querySelector("#errorMessage");
+const loadingIndicator = document.querySelector('#loadingIndicator');
 
 if (searchLink) {
   searchLink.addEventListener("click", function(event) {
     event.preventDefault()
     // refresh content
+    errorMessage.textContent ="";
     renderElement.textContent = "";
     handleFormSubmit(event);
   });
@@ -40,6 +43,7 @@ if (searchLink) {
 if (form) {
   form.addEventListener("submit", function (event) {
     event.preventDefault();
+    errorMessage.textContent ="";
     renderElement.textContent = "";
     handleFormSubmit(event);
   });
@@ -50,17 +54,20 @@ if (form) {
 function handleFormSubmit(event) {
   event.preventDefault();
 
+  // Show loading indicator
+  loadingIndicator.style.display = 'block';
+
   const input = document.querySelector("#search").value;
   // console.log("Input value:", input);
 
 
-// First promise
-fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input}&appid=62f3a1ae06706d5807a4f7d172197411`,{
-  method: 'GET',
-  headers: {
-    'Accept': 'application/json'
-  }
-})
+  // First promise
+  fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input}&appid=62f3a1ae06706d5807a4f7d172197411`,{
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json'
+    }
+  })
   .then((response) => {
     if (!response.ok) {
       throw new Error(response.status);
@@ -121,16 +128,27 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input}&appid=62f3a1ae
       locationCountry: data.sys.country,
       date: new Date()
     }
-    console.log(weatherDetails.temperature)
+    console.log(weatherDetails.temperature);
+
     let arr;
-    if(localStorage.getItem("weatherDetails") === null) {
-     arr = [];
-     console.log("This worked");
+    if (localStorage.getItem("weatherDetails") === null) {
+      arr = [];
+      console.log("This worked");
     } else {
-      arr = JSON.parse(localStorage.getItem("weatherDetails"));
+      try {
+        arr = JSON.parse(localStorage.getItem("weatherDetails"));
+      } catch (error) {
+        arr = [];
+        console.error("Error parsing localStorage data:", error);
+      }
     }
-    arr.unshift(weatherDetails);
-    localStorage.setItem("weatherDetails", JSON.stringify(arr))
+
+console.log(arr);
+arr.unshift(weatherDetails);
+localStorage.setItem("weatherDetails", JSON.stringify(arr));
+
+
+    
 
 
 
@@ -192,9 +210,31 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input}&appid=62f3a1ae
         localStorage.setItem("typeArray", JSON.stringify(typeArray));
       })
       .catch((error) => console.error(error));
+
+       // Hide loading indicator
+       loadingIndicator.style.display = 'none';
   })
   .catch((error) => {
     // Handle any errors that occurred during the request
+     // Hide loading indicator
+     loadingIndicator.style.display = 'none';
+
+    // Array of error messages
+  const errorMessages = [
+    "Are you sure that city exists?",
+    "Hmm, we've never heard of that place before.",
+    "Oops! It seems like the city you entered doesn't exist.",
+    "Sorry, we couldn't find any weather information for the city you entered.",
+    "Please check the spelling and try again. The city you entered doesn't match any known locations.",
+    "The city you entered is not recognized. Please enter a valid city name.",
+    "Uh-oh! It appears that the city you entered is not in our database."
+  ];
+
+  // Select a random error message
+      const randomErrorMessage = errorMessages[Math.floor(Math.random() * errorMessages.length)];
+    // Display error message
+    errorMessage.textContent = randomErrorMessage;
+
     console.error("Error:", error);
   });
 }
