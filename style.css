@@ -4,6 +4,7 @@
     font-family: 'Source Sans 3', sans-serif;
     font-weight: 400;
     --primary-color: #FFFBF3;
+    --second-color: #deb65ed4;
     --small-font: 1.25rem;
     --medium-font: 1.75rem;
     --large-font: 3rem;
@@ -72,7 +73,7 @@ body {
     left: -16rem;
     width: 16rem;
     height: 100%;
-    background-color: #deb65ed4;
+    background-color: var(--second-color);
     transition: left 0.3s ease;
   }
   
@@ -156,3 +157,19 @@ body {
     width: 2rem;
   }
 
+#about {  
+  font-size: var(--medium-font);
+  text-align:left;
+  width: 70%;
+  margin: auto;
+  margin-bottom: 5rem;
+}
+
+#loadingIndicator {
+  display: none;
+  /* Add styling properties to make the loading indicator visible and attractive */
+  margin: auto;
+  width: 70%;
+  text-align: center;
+  margin-top: 3rem;
+}
