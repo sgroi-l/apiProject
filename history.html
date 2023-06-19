@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;1,500&display=swap" rel="stylesheet"> 
-    <title>WeatherWise</title>
+    <title>WeatherWise History</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="data.css" />
     <script src="https://kit.fontawesome.com/1902eb1a0b.js" crossorigin="anonymous"></script>
@@ -23,7 +23,7 @@
       </label>
       <nav>
         <ul>
-          <li><a href="./history.html"><i class="fa-solid fa-clock-rotate-left" ></i>Search History</a></li>
+          <li><a href="./index.html"><i class="fa-solid fa-clock-rotate-left" ></i>Home</a></li>
           <li><a href="#"><i class="fa-solid fa-circle-info"></i>About</a></li>
           <li><a href="#"><i class="fa-solid fa-address-book"></i>Contact</a></li>
         </ul>
@@ -36,18 +36,9 @@
 
  
     <img id="logo" src="images/logo.svg" alt="WeatherWise Logo"> <!-- Image of our logo -->
-
-    <form id="searchForm" action="#" method="GET">
-        <label for="search"></label>
-        <div class="bar">
-            <input type="text" id="search" name="search" placeholder="Enter a city name">
-            <a href="#" id="searchLink"><img id="searchIcon" src="images/search-icon.svg" alt="Search Icon"></a>
-            
-        </div>
-        
-    </form>
-    <div id="data-render"></div>
+    <h1 id="title">History</h1>
+    <div id="data-history"></div>
   </main>
-<script type="module" src="./main.js"></script>
+<script type="module"  src="./main.js"></script>
 </body>
 </html>

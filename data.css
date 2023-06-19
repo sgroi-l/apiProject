@@ -3,30 +3,44 @@
     width: 70%;
     margin: auto;
   }
-  
-  #temperature {
-    display: block;
-    margin: 2.5rem auto 0 auto;
-    text-align: center;
-    font-size: var(--large-font);
-  }
-  
-  #location {
-    display: block;
-    margin: 0 auto 2.5rem auto;
-    text-align: center;
-    font-size: var(--small-font);
-  }
-  
-  #activity {
-    display: block;
-    text-align: center;
-    font-size: var(--medium-font);
-  }
+#data-history {
+  text-align: center;
+  width: 70%;
+  margin: auto;
+}
 
-  @media only screen and (max-width: 600px) {
-    #activity {
-        text-align: justify;
-        text-justify: inter-word;
-    }
+#title {
+  font-size: var(--large-font);
+  text-align: center;
+}
+
+#temperature {
+  display: block;
+  margin: 2.5rem auto 0 auto;
+  text-align: center;
+  font-size: var(--large-font);
+}
+
+#location {
+  display: block;
+  margin: 0 auto 2.5rem auto;
+  text-align: center;
+  font-size: var(--small-font);
+}
+
+#activity {
+  display: block;
+  text-align: center;
+  font-size: var(--medium-font);
+}
+
+#date {
+  border-bottom: 1px solid #deb65ed4;
+}
+
+@media only screen and (max-width: 600px) {
+  #activity {
+      text-align: justify;
+      text-justify: inter-word;
   }
+}

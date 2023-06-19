@@ -1,3 +1,9 @@
+import { getHistory } from "./history.js";
+let dataHistoryElement = document.querySelector("#data-history");
+if (dataHistoryElement) {
+  getHistory(dataHistoryElement);
+}
+
 // Function to generate a random item from an array
 function getRandomItem(array) {
   const randomIndex = Math.floor(Math.random() * array.length);
@@ -22,19 +28,24 @@ const form = document.querySelector("#searchForm");
 const searchLink = document.querySelector('#searchLink'); // I replaced the submit button on the form with an icon. 
 let renderElement = document.querySelector('#data-render')
 
+if (searchLink) {
+  searchLink.addEventListener("click", function(event) {
+    event.preventDefault()
+    // refresh content
+    renderElement.textContent = "";
+    handleFormSubmit(event);
+  });
+}
 
-searchLink.addEventListener("click", function(event) {
-  event.preventDefault()
-  // refresh content
-  renderElement.textContent = "";
-  handleFormSubmit(event);
-});
+if (form) {
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    renderElement.textContent = "";
+    handleFormSubmit(event);
+  });
+}
 
-form.addEventListener("submit", function (event) {
-  event.preventDefault();
-  renderElement.textContent = "";
-  handleFormSubmit(event);
-});
+
 
 function handleFormSubmit(event) {
   event.preventDefault();
@@ -95,21 +106,33 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input}&appid=62f3a1ae
       randomType = getRandomItem(typeArray);
     }
 
-    // Storing data in local storage
-    const weatherDetails = {
-      temperature: temperature,
-      locationName: data.name,
-      locationCountry: data.sys.country
-    }
-
-    localStorage.setItem("weatherDetails", JSON.stringify(weatherDetails))
-
     // Storing the updated typeArray in local storage
     if (temperature >= 20) {
       localStorage.setItem("hotTypeArray", JSON.stringify(typeArray));
     } else {
       localStorage.setItem("coldTypeArray", JSON.stringify(typeArray));
     }
+
+    // Storing data in local storage as objects in an array
+
+    const weatherDetails = {
+      temperature: temperature,
+      locationName: data.name,
+      locationCountry: data.sys.country,
+      date: new Date()
+    }
+    console.log(weatherDetails.temperature)
+    let arr;
+    if(localStorage.getItem("weatherDetails") === null) {
+     arr = [];
+     console.log("This worked");
+    } else {
+      arr = JSON.parse(localStorage.getItem("weatherDetails"));
+    }
+    arr.unshift(weatherDetails);
+    localStorage.setItem("weatherDetails", JSON.stringify(arr))
+
+
 
     fetch(`https://www.boredapi.com/api/activity?type=${randomType}`)
       .then((response) => {
@@ -138,7 +161,16 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input}&appid=62f3a1ae
           activity: jsonData.activity
         }
 
-        window.localStorage.setItem("activityDetails", JSON.stringify(activityDetails));
+        let arr;
+        if(localStorage.getItem("activityDetails") === null) {
+         arr = [];
+         console.log("This worked");
+        } else {
+          arr = JSON.parse(localStorage.getItem("activityDetails"));
+        }
+        arr.unshift(activityDetails);
+        localStorage.setItem("activityDetails", JSON.stringify(arr))
+        
         
         // Remove the selected type from the typeArray
         const filteredArray = typeArray.filter(type => type !== randomType);
