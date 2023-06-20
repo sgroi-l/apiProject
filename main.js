@@ -1,14 +1,12 @@
-import { getHistory } from "./history.js";
+import { getHistory, renderWeatherData, getRandomItem, clearSearchResult, handleFormEvent, storeDataInLocalStorage, createElement } from "./utils.js";
+
+
 let dataHistoryElement = document.querySelector("#data-history");
 if (dataHistoryElement) {
   getHistory(dataHistoryElement);
 }
 
-// Function to generate a random item from an array
-function getRandomItem(array) {
-  const randomIndex = Math.floor(Math.random() * array.length);
-  return array[randomIndex];
-}
+
 
 const menuToggle = document.querySelector('#menu-toggle');
 const nav = document.querySelector('nav');
@@ -24,32 +22,25 @@ document.addEventListener('click', function(event) {
   }
 });
  
+
 const form = document.querySelector("#searchForm");
 const searchLink = document.querySelector('#searchLink'); // I replaced the submit button on the form with an icon. 
-let renderElement = document.querySelector('#data-render')
+let renderElement = document.querySelector('#data-render');
 let errorMessage = document.querySelector("#errorMessage");
-const loadingIndicator = document.querySelector('#loadingIndicator');
 
 if (searchLink) {
-  searchLink.addEventListener("click", function(event) {
-    event.preventDefault()
-    // refresh content
-    errorMessage.textContent ="";
-    renderElement.textContent = "";
-    handleFormSubmit(event);
+  searchLink.addEventListener("click", function (event) {
+    handleFormEvent(event, errorMessage, renderElement, handleFormSubmit);
   });
 }
 
 if (form) {
   form.addEventListener("submit", function (event) {
-    event.preventDefault();
-    errorMessage.textContent ="";
-    renderElement.textContent = "";
-    handleFormSubmit(event);
+    handleFormEvent(event, errorMessage, renderElement, handleFormSubmit);
   });
 }
 
-
+const loadingIndicator = document.querySelector('#loadingIndicator');
 
 function handleFormSubmit(event) {
   event.preventDefault();
@@ -58,8 +49,6 @@ function handleFormSubmit(event) {
   loadingIndicator.style.display = 'block';
 
   const input = document.querySelector("#search").value;
-  // console.log("Input value:", input);
-
 
   // First promise
   fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input}&appid=62f3a1ae06706d5807a4f7d172197411`,{
@@ -78,21 +67,8 @@ function handleFormSubmit(event) {
     // Access the temperature value
     const temperature = Math.round(data.main.temp - 273.15);
 
-    // Use the temperature value as needed
-    // console.log(`Temperature in ${data.name}, ${data.sys.country}: ${temperature}\u00B0`);
-    // Create element
-    const temperatureElement = document.createElement("h1");
-    const locationElement = document.createElement("p");
-    temperatureElement.setAttribute("id", "temperature");
-    locationElement.setAttribute("id", "location");
-    let temperatureText = document.createTextNode(`${temperature}\u00B0C`)
-    let locationText = document.createTextNode(`${data.name}, ${data.sys.country}`)
-    // append elements 
-    renderElement.append(temperatureElement);
-    renderElement.append(locationElement);
-    temperatureElement.append(temperatureText);
-    locationElement.append(locationText);
-    // console.log(renderElement);
+    renderWeatherData(temperature, data.name, data.sys.country, renderElement);
+
     // Second promise
     let typeArray;
     if (temperature >= 20) {
@@ -130,27 +106,7 @@ function handleFormSubmit(event) {
     }
     console.log(weatherDetails.temperature);
 
-    let arr;
-    if (localStorage.getItem("weatherDetails") === null) {
-      arr = [];
-      console.log("This worked");
-    } else {
-      try {
-        arr = JSON.parse(localStorage.getItem("weatherDetails"));
-      } catch (error) {
-        arr = [];
-        console.error("Error parsing localStorage data:", error);
-      }
-    }
-
-console.log(arr);
-arr.unshift(weatherDetails);
-localStorage.setItem("weatherDetails", JSON.stringify(arr));
-
-
-    
-
-
+    storeDataInLocalStorage("weatherDetails", weatherDetails);
 
     fetch(`https://www.boredapi.com/api/activity?type=${randomType}`)
       .then((response) => {
@@ -160,24 +116,15 @@ localStorage.setItem("weatherDetails", JSON.stringify(arr));
         return response.json();
       })
       .then((jsonData) => {
-        // console.log(jsonData);
-        console.log(jsonData.type);
         // Create element
-        const activityElement = document.createElement('h2');
-        // Set ID attribute to activity
-        activityElement.setAttribute('id', "activity")
-        // Create text for activity element
-        let activityText = document.createTextNode(`Try a ${jsonData.type} activity today. ${jsonData.activity}.`);
-        // append elements
-        activityElement.append(activityText);
+        const activityElement = createElement('h2', 'activity', `Try a ${jsonData.type} activity today. ${jsonData.activity}.`);
         renderElement.append(activityElement);
-        // console.log(renderElement);
-
+      
         // Storing data in local storage
         const activityDetails = {
           activityType: jsonData.type,
           activity: jsonData.activity
-        }
+        };
 
         let arr;
         if(localStorage.getItem("activityDetails") === null) {
@@ -195,7 +142,7 @@ localStorage.setItem("weatherDetails", JSON.stringify(arr));
         typeArray = filteredArray.length > 0 ? filteredArray : (temperature >= 20 ? ["social", "recreational", "charity"] : ["education", "cooking", "relaxation"]);
 
         console.log(filteredArray)
-        console.log(typeArray);
+    
 
         // Reset typeArray to default values if empty
         if (typeArray.length === 0) { 
